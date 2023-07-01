@@ -2,14 +2,13 @@ import sys
 print(sys.path)
 
 from scrapy.crawler import CrawlerProcess
-from scrapy.utils.project import get_project_settings
 
-from spiders.CareerlySpider import CareerlySpider
+from spiders.careerly_spider import CareerlySpider
 
 if __name__ == "__main__":
-    project_settings = get_project_settings()
-    project_settings.setmodule('superbee.settings')
-    process = CrawlerProcess(project_settings)
+    process = CrawlerProcess({
+        'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
+    })
 
     process.crawl(CareerlySpider)
     process.start()
