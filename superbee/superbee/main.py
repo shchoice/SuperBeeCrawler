@@ -3,7 +3,7 @@ print(sys.path)
 
 from scrapy.crawler import CrawlerProcess
 
-from spiders.careerly_spider import CareerlySpider
+from superbee.superbee.spiders.careerly.careerly_spider import CareerlySpider
 
 if __name__ == "__main__":
     process = CrawlerProcess({
