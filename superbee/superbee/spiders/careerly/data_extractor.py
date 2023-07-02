@@ -2,8 +2,11 @@ from time import sleep
 
 from selenium.common import NoSuchElementException
 
+from superbee.superbee.mariadb.db_manager import Session, CareerlyPosts
+
 
 def get_data(driver):
+    session = Session()
     posts = driver.find_elements('xpath', '//*[@id="__next"]/div[2]/div[2]/div/div[1]/div[2]/div/div')
 
     for i, post in enumerate(posts):
@@ -28,9 +31,13 @@ def get_data(driver):
         except NoSuchElementException:
             pass
 
-        print(author)
-        print(workplace)
-        print(title)
-        print(text)
-        print(url)
+        existing_post = session.query(CareerlyPosts).filter_by(author=author, workplace=workplace, title=title).first()
+        if existing_post is None:
+            post = CareerlyPosts(author=author, workplace=workplace, title=title, text=text, url=url)
+            session.add(post)
+            session.commit()
+        else:
+            print("Post already exists in the database")
+
+    session.close()
 
